@@ -29,6 +29,7 @@
             --color-outline: #7a7585;
             --color-error: #ba1a1a;
             --color-price: #388e3c; 
+            --color-online: #4CAF50; /* Green for online status */
             
             /* Expressive Geometry */
             --border-radius-xl: 36px;
@@ -58,8 +59,9 @@
             
             /* Other Colors */
             --color-outline: #948f99;
-            --color-error: #ffb4ab;
+            --color-error: #ffb4ab; /* Adjusted light red for visibility in dark mode */
             --color-price: #a5d6a7; 
+            --color-online: #81c784; /* Lighter green for dark mode contrast */
             
             /* Dark Shadows (less prominent) */
             --elevation-low: 0 2px 5px rgba(0, 0, 0, 0.5);
@@ -107,7 +109,15 @@
             font-size: 2.5em;
             margin-bottom: 8px;
             font-weight: 800;
-            letter-spacing: -1px; /* Expressive type */
+            letter-spacing: -1px; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .header h1 > .fa-train {
+            font-size: 0.8em;
         }
 
         .header p {
@@ -115,6 +125,30 @@
             opacity: 0.9;
         }
 
+        /* --- Status Icons Styling (Using Emojis) --- */
+        .header h1 .status-icon {
+            font-size: 1.2em;
+            vertical-align: middle;
+            transition: color 0.3s ease;
+            display: inline-flex;
+            line-height: 1; /* Ensures proper alignment of emojis */
+        }
+
+        /* Default color is inherited/normal, will change to red on error */
+        .header h1 .status-icon.online {
+            color: var(--color-online);
+        }
+
+        .header h1 .status-icon.error {
+            color: var(--color-error); 
+            animation: pulse-red 1.2s infinite alternate;
+        }
+
+        @keyframes pulse-red {
+            from { opacity: 0.7; transform: scale(1.0); }
+            to { opacity: 1; transform: scale(1.2); }
+        }
+        
         /* --- Theme Toggle (Floating Action Button Style) --- */
         .theme-toggle {
             position: absolute;
@@ -182,6 +216,12 @@
             transform: translateY(0);
         }
         
+        /* Ensure emojis in tabs are vertically centered */
+        .tab span {
+            font-size: 1.2em;
+            line-height: 1;
+        }
+
         /* --- Content Area --- */
         .content {
             padding: 32px;
@@ -228,6 +268,11 @@
             gap: 10px;
             border-bottom: 2px solid var(--color-secondary-container);
         }
+        
+        /* Styling for Material Icons in section titles */
+        .section-title .material-icons {
+            font-size: 1.2em;
+        }
 
         /* --- Menu Table (Cleaned up) --- */
         .menu-table {
@@ -253,12 +298,16 @@
         }
 
         .menu-table tbody tr {
-            border-bottom: 1px solid rgba(var(--color-outline), 0.5);
+            border-bottom: 1px solid rgba(122, 117, 133, 0.15); /* Using a softer outline here */
             transition: background-color 0.2s ease;
         }
 
+        .menu-table tbody tr:last-child {
+            border-bottom: none;
+        }
+
         .menu-table tbody tr:hover {
-            background-color: rgba(var(--color-primary), 0.1);
+            background-color: rgba(121, 87, 213, 0.1); /* Hover using a primary color tint */
         }
 
         .menu-table td {
@@ -314,8 +363,14 @@
         }
         
         .error {
-            background-color: var(--color-error);
-            color: var(--color-on-primary);
+            background-color: #fce8e6; /* Light error background */
+            color: var(--color-error);
+            border-left: 4px solid var(--color-error);
+        }
+        
+        body.dark-mode .error {
+            background-color: #3b000a;
+            color: var(--color-error);
         }
         
         .note {
@@ -391,16 +446,20 @@
             <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle Theme">
                 <i class="material-icons" id="theme-icon">dark_mode</i>
             </button>
-            <h1><i class="fa fa-train"></i> IRCTC E-Catering</h1>
+            <h1>
+                <i class="fa fa-train"></i> IRCTC E-Catering 
+                <span class="status-icon" id="beverages-status-icon">☕</span>
+                <span class="status-icon" id="meals-status-icon">🥗</span>
+            </h1>
             <p>Official Standard Menu Rates (Inclusive of All Taxes)</p>
         </div>
 
         <div class="tabs">
             <button class="tab active" onclick="showTab(event, 'beverages')">
-                <i class="material-icons">local_cafe</i> Beverages
+                <span>☕</span> Beverages
             </button>
             <button class="tab" onclick="showTab(event, 'meals')">
-                <i class="material-icons">restaurant</i> Meals & Snacks
+                <span>🥗</span> Meals & Snacks
             </button>
         </div>
 
@@ -426,6 +485,26 @@
         // URLs for fetching data
         const BEVERAGES_URL = 'https://menurates.irctc.co.in/standared_beverages.html';
         const MEALS_URL = 'https://menurates.irctc.co.in/standared_meal.html';
+
+        /**
+         * Function to update the color of the status icon based on the fetch result.
+         * @param {string} id - The ID of the status icon element (e.g., 'beverages-status-icon').
+         * @param {boolean} isOnline - True if the data fetch was successful and contained content.
+         */
+        function updateStatusIcon(id, isOnline) {
+            const iconElement = document.getElementById(id);
+            if (iconElement) {
+                if (isOnline) {
+                    iconElement.classList.remove('error');
+                    iconElement.classList.add('online');
+                    iconElement.title = 'Source Data Online'; 
+                } else {
+                    iconElement.classList.remove('online');
+                    iconElement.classList.add('error');
+                    iconElement.title = 'Source Data Offline/Error';
+                }
+            }
+        }
 
         // --- Data Parsing Logic (Kept functional) ---
         function parseMenuData(htmlString) {
@@ -512,7 +591,6 @@
             for (const [category, items] of Object.entries(data)) {
                 if (items.length === 0) continue; 
                 
-                // Use the Material Icon for the section based on the category (simplified)
                 const categoryIcon = category.toLowerCase().includes('tea') || category.toLowerCase().includes('coffee') ? 'emoji_food_beverage' 
                                      : category.toLowerCase().includes('meal') ? 'set_meal'
                                      : 'restaurant';
@@ -535,7 +613,6 @@
                 `;
 
                 items.forEach(item => {
-                    // Using placeholder paths from IRCTC's site, assuming they work or are proxied
                     const icon = item.veg
                         ? 'https://menurates.irctc.co.in/images/veg.png'
                         : 'https://menurates.irctc.co.in/images/non-veg.png';
@@ -567,16 +644,13 @@
         
         // --- UI & Theme Logic ---
         function showTab(event, tabName) {
-            // Hide all tab contents and remove active class from all tabs
             document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
             document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
 
-            // Show selected tab content and add active class to clicked tab
             document.getElementById(tabName).classList.add('active');
             event.currentTarget.classList.add('active');
         }
 
-        // Theme toggle function
         function toggleTheme() {
             const body = document.body;
             const themeIcon = document.getElementById('theme-icon');
@@ -585,17 +659,15 @@
             
             const isDarkMode = body.classList.contains('dark-mode');
             
-            // Update icon and local storage
             if (isDarkMode) {
-                themeIcon.textContent = 'light_mode'; // Change icon to sun
+                themeIcon.textContent = 'light_mode';
                 localStorage.setItem('theme', 'dark');
             } else {
-                themeIcon.textContent = 'dark_mode'; // Change icon to moon
+                themeIcon.textContent = 'dark_mode';
                 localStorage.setItem('theme', 'light');
             }
         }
 
-        // Load saved theme preference
         function loadTheme() {
             const savedTheme = localStorage.getItem('theme');
             const body = document.body;
@@ -609,14 +681,13 @@
             }
         }
 
-        // Initialize the page and fetch data
+        // Initialize the page, fetch data, and update status icons
         window.addEventListener('DOMContentLoaded', async () => {
             loadTheme();
             
             const beveragesDiv = document.getElementById('beverages');
             const mealsDiv = document.getElementById('meals');
 
-            // Set initial loading state with modern CSS variables
             const loadingTemplate = (menuType) => `
                 <div class="loading">
                     <i class="fa fa-spinner fa-spin"></i> Loading ${menuType} menu from IRCTC...
@@ -626,9 +697,12 @@
             beveragesDiv.innerHTML = loadingTemplate('beverages');
             mealsDiv.innerHTML = loadingTemplate('meals');
 
-            // 1. Fetch beverages data
+            // 1. Fetch beverages data and update status
             const beveragesData = await fetchMenuData(BEVERAGES_URL);
-            if (beveragesData && Object.keys(beveragesData).length > 0) {
+            const isBeveragesOnline = beveragesData && Object.keys(beveragesData).length > 0;
+            updateStatusIcon('beverages-status-icon', isBeveragesOnline); 
+            
+            if (isBeveragesOnline) {
                 const beveragesContent = createMenuTable(beveragesData);
                 beveragesDiv.innerHTML = beveragesContent + `
                     <div class="note">
@@ -645,9 +719,12 @@
                 `;
             }
 
-            // 2. Fetch meals data
+            // 2. Fetch meals data and update status
             const mealsData = await fetchMenuData(MEALS_URL);
-            if (mealsData && Object.keys(mealsData).length > 0) {
+            const isMealsOnline = mealsData && Object.keys(mealsData).length > 0;
+            updateStatusIcon('meals-status-icon', isMealsOnline); 
+
+            if (isMealsOnline) {
                 const mealsContent = createMenuTable(mealsData);
                 mealsDiv.innerHTML = mealsContent + `
                     <div class="note">
