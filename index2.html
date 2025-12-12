@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indian Railway Food Menu - IRCTC</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Montserrat:wght@800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        /* --- Material You / Expressive Theme Variables (Simulated) --- */
+        :root {
+            /* Primary Color: Deep Purple / Indigo */
+            --hue-primary: 260; 
+            --color-primary: hsl(var(--hue-primary), 70%, 55%); /* #7957d5 (Vibrant) */
+            --color-on-primary: #ffffff;                        /* Surface/Background Colors (Light) */
+            --color-surface-bg: #f8f6fb;
+            --color-surface-container-high: #ffffff; 
+            --color-surface-container: #ede7f6;
+            --color-on-surface: #1d1b20;                        /* Accent & Secondary */
+            --color-secondary-container: hsl(var(--hue-primary), 60%, 90%); /* Light Purple Pill */
+            --color-on-secondary-container: #494551;                        /* Other Colors */
+            --color-outline: #7a7585;
+            --color-error: #ba1a1a;
+            --color-price: #388e3c; 
+            --color-online: #4CAF50; /* Green for online status */                        
+            /* Expressive Geometry */
+            --border-radius-xl: 36px;
+            --border-radius-l: 16px;                        
+            /* Expressive Shadow / Elevation */
+            --elevation-low: 0 4px 10px rgba(0, 0, 0, 0.05);
+            --elevation-mid: 0 8px 18px rgba(0, 0, 0, 0.1);
+            --elevation-high: 0 12px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Dark Theme Palette (Simulated) */        
+        body.dark-mode {
+            /* Primary Color: Lighter Purple for contrast */
+            --color-primary: hsl(var(--hue-primary), 70%, 75%); /* #d0bcff */
+            --color-on-primary: #381e72;                        /* Surface/Background Colors (Dark) */
+            --color-surface-bg: #110e14;
+            --color-surface-container-high: #1d1b20;
+            --color-surface-container: #26242c;
+            --color-on-surface: #e6e1e5;                        /* Accent & Secondary */
+            --color-secondary-container: #443c52;
+            --color-on-secondary-container: #e8def8;                        /* Other Colors */
+            --color-outline: #948f99;
+            --color-error: #ffb4ab; /* Adjusted light red for visibility in dark mode */
+            --color-price: #a5d6a7; 
+            --color-online: #81c784; /* Lighter green for dark mode contrast */                        
+            /* Dark Shadows (less prominent) */
+            --elevation-low: 0 2px 5px rgba(0, 0, 0, 0.5);
+            --elevation-mid: 0 5px 12px rgba(0, 0, 0, 0.6);
+            --elevation-high: 0 10px 20px rgba(0, 0, 0, 0.8);
+        }
+
+        /* --- Global Styles --- */        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--color-surface-bg);
+            color: var(--color-on-surface);
+            min-height: 100vh;
+            padding: 24px;
+            transition: background-color 0.4s ease-in-out, color 0.4s ease-in-out;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: var(--color-surface-container-high);
+            border-radius: var(--border-radius-xl);
+            box-shadow: var(--elevation-mid);
+            overflow: hidden;
+            transition: background-color 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        /* --- Header Section (Expressive Top Bar) --- */        
+        .header {
+            background-color: var(--color-primary);
+            color: var(--color-on-primary);
+            padding: 50px 24px 30px; 
+            text-align: center;
+            position: relative;
+        }
+
+        .header h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.5em;
+            margin-bottom: 8px;
+            font-weight: 800;
+            letter-spacing: -1px; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .header h1 > .fa-train {
+            font-size: 0.8em;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        /* --- Status Icons Styling (Using Emojis) --- */        
+        .header h1 .status-icon {
+            font-size: 1.2em;
+            vertical-align: middle;
+            transition: color 0.3s ease;
+            display: inline-flex;
+            line-height: 1; /* Ensures proper alignment of emojis */
+        }
+
+        /* Default color is inherited/normal, will change to red on error */        
+        .header h1 .status-icon.online {
+            color: var(--color-online);
+        }
+
+        .header h1 .status-icon.error {
+            color: var(--color-error); 
+            animation: pulse-red 1.2s infinite alternate;
+        }
+
+        @keyframes pulse-red {
+            from { opacity: 0.7; transform: scale(1.0); }
+            to { opacity: 1; transform: scale(1.2); }
+        }
+
+        /* --- Theme Toggle (Floating Action Button Style) --- */        
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: var(--color-surface-container-high);
+            color: var(--color-primary);
+            border: none;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.4em;
+            box-shadow: var(--elevation-low);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .theme-toggle:hover {
+            box-shadow: var(--elevation-mid);
+            transform: scale(1.05);
+        }
+
+        /* --- Tabs (Segmented Button/Pill Style) --- */        
+        .tabs {
+            display: flex;
+            padding: 16px 24px;
+            gap: 12px;
+            background-color: var(--color-surface-container-high);
+            border-bottom: 1px solid var(--color-outline);
+            transition: background-color 0.4s ease;
+            flex-wrap: wrap; /* Added for responsiveness */
+        }
+
+        .tab {
+            flex: 1;
+            min-width: 120px; /* Added for better mobile layout */
+            padding: 14px 10px;
+            text-align: center;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 500;
+            color: var(--color-on-surface);
+            border: 1px solid var(--color-outline);
+            background-color: transparent;
+            border-radius: var(--border-radius-l);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .tab:hover {
+            background-color: var(--color-secondary-container);
+            border-color: var(--color-secondary-container);
+            transform: translateY(-2px);
+        }
+
+        .tab.active {
+            background-color: var(--color-primary);
+            color: var(--color-on-primary);
+            border-color: var(--color-primary);
+            box-shadow: var(--elevation-low);
+            transform: translateY(0);
+        }
+
+        /* Ensure emojis in tabs are vertically centered */        
+        .tab span {
+            font-size: 1.2em;
+            line-height: 1;
+        }
+
+        /* --- Content Area --- */        
+        .content {
+            padding: 32px;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            /* Expressive fade and slide-in animation */
+            animation: fadeInSlide 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        @keyframes fadeInSlide {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- Menu Sections (Expressive Card Containers) --- */        
+        .menu-section {
+            margin-bottom: 32px;
+            padding: 24px;
+            background-color: var(--color-surface-container);
+            border-radius: var(--border-radius-l);
+            box-shadow: var(--elevation-low);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .menu-section:hover {
+            box-shadow: var(--elevation-mid);
+            transform: translateY(-4px);
+        }
+
+        .section-title {
+            color: var(--color-primary);
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+            font-size: 1.6em;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 2px solid var(--color-secondary-container);
+        }
+
+        /* Styling for Material Icons in section titles */        
+        .section-title .material-icons {
+            font-size: 1.2em;
+        }
+
+        /* --- Menu Table (Cleaned up) --- */        
+        .menu-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .menu-table thead {
+            border-bottom: 2px solid var(--color-outline);
+        }
+
+        .menu-table th {
+            padding: 12px 8px;
+            font-weight: 500;
+            text-align: left;
+            opacity: 0.8;
+            font-size: 0.9em;
+        }
+
+        .menu-table th:nth-child(3),
+        .menu-table th:nth-child(4) {
+            text-align: right;
+        }
+
+        .menu-table tbody tr {
+            border-bottom: 1px solid rgba(122, 117, 133, 0.15); /* Using a softer outline here */
+            transition: background-color 0.2s ease;
+        }
+
+        .menu-table tbody tr:last-child {
+            border-bottom: none;
+        }
+
+        .menu-table tbody tr:hover {
+            background-color: rgba(121, 87, 213, 0.1); /* Hover using a primary color tint */
+        }
+
+        .menu-table td {
+            padding: 16px 8px;
+            vertical-align: middle;
+        }
+
+        .menu-table td:nth-child(3),
+        .menu-table td:nth-child(4) {
+            text-align: right;
+        }
+
+        .veg-icon, .non-veg-icon {
+            width: 24px;
+            height: 24px;
+            vertical-align: middle;
+        }
+
+        .item-name {
+            font-weight: 400;
+            font-size: 1.05em;
+        }
+
+        .price {
+            font-size: 1.1em;
+            color: var(--color-price);
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .fa-rupee {
+            font-size: 0.9em;
+            margin-right: 2px;
+            font-weight: bold;
+        }
+
+        /* --- Message Styles (Contained Cards) --- */        
+        .loading, .error, .note {
+            padding: 20px;
+            border-radius: var(--border-radius-l);
+            margin: 20px 0;
+            font-size: 1em;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: var(--elevation-low);
+        }
+
+        .loading {
+            justify-content: center;
+            background-color: var(--color-secondary-container);
+            color: var(--color-primary);
+        }
+
+        .error {
+            background-color: #fce8e6; /* Light error background */
+            color: var(--color-error);
+            border-left: 4px solid var(--color-error);
+        }
+
+        body.dark-mode .error {
+            background-color: #3b000a;
+            color: var(--color-error);
+        }
+
+        .note {
+            background-color: var(--color-primary);
+            color: var(--color-on-primary);
+        }
+
+        .note strong {
+            font-weight: 700;
+        }
+
+        /* --- Media Queries --- */        
+        @media (max-width: 600px) {
+            body {
+                padding: 16px 8px;
+            }
+
+            .container {
+                border-radius: 24px;
+            }
+
+            .header {
+                padding: 40px 16px 20px;
+            }
+
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .theme-toggle {
+                width: 48px;
+                height: 48px;
+                font-size: 1.2em;
+            }
+
+            .tabs {
+                flex-direction: column;
+                padding: 16px;
+                gap: 8px;
+            }
+            
+            .tab {
+                font-size: 0.9em;
+                padding: 12px;
+                min-width: unset; /* Remove min-width on small screens */
+            }
+
+            .content {
+                padding: 16px;
+            }
+
+            .section-title {
+                font-size: 1.4em;
+            }
+
+            .menu-table {
+                font-size: 0.85em;
+            }
+
+            .menu-table th,
+            .menu-table td {
+                padding: 12px 4px;
+            }
+
+            .price {
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle Theme">
+                <i class="material-icons" id="theme-icon">dark_mode</i>
+            </button>
+            <h1>
+                <i class="fa fa-train"></i> IRCTC E-Catering 
+                <span class="status-icon" id="beverages-status-icon" title="Beverages Status">☕</span>
+                <span class="status-icon" id="breakfast-status-icon" title="Breakfast Status">🍳</span>
+                <span class="status-icon" id="meals-status-icon" title="Meals Status">🥗</span>
+                <span class="status-icon" id="snackmeals-status-icon" title="Snack Meals Status">🥪</span>
+            </h1>
+            <p>Official Standard Menu Rates (Inclusive of All Taxes)</p>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" onclick="showTab(event, 'beverages')">
+                <span>☕</span> Beverages
+            </button>
+            <button class="tab" onclick="showTab(event, 'breakfast')">
+                <span>🍳</span> Breakfast
+            </button>
+            <button class="tab" onclick="showTab(event, 'meals')">
+                <span>🥗</span> Meals
+            </button>
+            <button class="tab" onclick="showTab(event, 'snackmeals')">
+                <span>🥪</span> Snack Meals
+            </button>
+        </div>
+
+        <div class="content">
+            <div id="beverages" class="tab-content active">
+                <div class="loading">
+                    <i class="fa fa-spinner fa-spin"></i> Loading beverages menu...
+                </div>
+            </div>
+            <div id="breakfast" class="tab-content">
+                <div class="loading">
+                    <i class="fa fa-spinner fa-spin"></i> Loading breakfast menu...
+                </div>
+            </div>
+            <div id="meals" class="tab-content">
+                <div class="loading">
+                    <i class="fa fa-spinner fa-spin"></i> Loading meals menu...
+                </div>
+            </div>
+            <div id="snackmeals" class="tab-content">
+                <div class="loading">
+                    <i class="fa fa-spinner fa-spin"></i> Loading snack meals menu...
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // CORS proxy to fetch data from IRCTC (as provided)
+        const CORS_PROXY = 'https://api.allorigins.win/raw?url=';
+        
+        // URLs for fetching data
+        const BEVERAGES_URL = 'https://menurates.irctc.co.in/standared_beverages.html';
+        const MEALS_URL = 'https://menurates.irctc.co.in/standared_meal.html';
+        const BREAKFAST_URL = 'https://menurates.irctc.co.in/standared_breakfast.html'; // NEW
+        const SNACKMEALS_URL = 'https://menurates.irctc.co.in/snackMeals.html'; // NEW
+
+        /**
+         * Function to update the color of the status icon based on the fetch result.
+         * @param {string} id - The ID of the status icon element (e.g., 'beverages-status-icon').
+         * @param {boolean} isOnline - True if the data fetch was successful and contained content.
+         */
+        function updateStatusIcon(id, isOnline) {
+            const iconElement = document.getElementById(id);
+            if (iconElement) {
+                if (isOnline) {
+                    iconElement.classList.remove('error');
+                    iconElement.classList.add('online');
+                    // title is set in the HTML now
+                } else {
+                    iconElement.classList.remove('online');
+                    iconElement.classList.add('error');
+                    // title is set in the HTML now
+                }
+            }
+        }
+
+        // --- Data Parsing Logic (Kept functional) ---
+        function parseMenuData(htmlString) {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(htmlString, 'text/html');
+            const menuData = {};
+            let currentCategory = null;
+
+            const mainTable = doc.querySelector('table.listmenu, table.tablewhites, table');
+            if (!mainTable) return menuData;
+
+            const rows = mainTable.querySelectorAll('tr');
+
+            rows.forEach(row => {
+                const categoryHeader = row.querySelector('td[colspan]');
+                if (categoryHeader && categoryHeader.querySelector('h3')) {
+                    const categoryName = categoryHeader.querySelector('h3').textContent.trim();
+
+                    if (categoryName.includes('Humsafar') || categoryName.includes('AVM Machine')) {
+                        currentCategory = null;
+                        return;
+                    }
+
+                    currentCategory = categoryName;
+                    menuData[currentCategory] = [];
+                    return;
+                }
+
+                if (currentCategory === null) return;
+
+                const nestedTable = row.querySelector('table');
+                if (nestedTable) {
+                    return;
+                }
+
+                const cells = row.querySelectorAll('td');
+                if (cells.length >= 4 && currentCategory) { // Changed to >= 4 for snack meals page structure
+                    const itemText = cells[1].textContent.trim();
+
+                    if (!itemText || itemText === 'Item' || itemText === '') return;
+
+                    const img = cells[0].querySelector('img');
+                    const isVeg = img ? (img.src.includes('veg.png') && !img.src.includes('non-veg.png')) : true; // Assume veg if no icon on some pages
+
+                    // Adjusted indexing for pages with different layouts
+                    const atStationText = cells[cells.length - 2].textContent.trim(); 
+                    const inTrainText = cells[cells.length - 1].textContent.trim();
+
+                    const cleanPrice = (text) => {
+                        if (text === 'N/A' || text === '-') return 'N/A';
+                        const price = parseFloat(text.replace(/[^\d.]/g, ''));
+                        return isNaN(price) ? text : Math.round(price);
+                    };
+
+                    menuData[currentCategory].push({
+                        item: itemText,
+                        veg: isVeg,
+                        atStation: cleanPrice(atStationText),
+                        inTrain: cleanPrice(inTrainText)
+                    });
+                }
+            });
+
+            return menuData;
+        }
+
+        // Function to fetch data from URL
+        async function fetchMenuData(url) {
+            try {
+                // Fetch the HTML content using the CORS proxy
+                const response = await fetch(CORS_PROXY + encodeURIComponent(url));
+                if (!response.ok) throw new Error('Failed to fetch data');
+                const html = await response.text();
+                return parseMenuData(html);
+            } catch (error) {
+                console.error('Error fetching menu data:', error);
+                return null;
+            }
+        }
+
+        // --- HTML Generation Logic (Updated for expressive look) ---
+        function createMenuTable(data, tabName) {
+            let html = '';
+            
+            // Note specific to the tab content
+            let noteHtml = '';
+            if (tabName === 'beverages') {
+                noteHtml = `
+                    <div class="note">
+                        <strong><i class="material-icons">info</i> Important Note:</strong> All displayed prices are officially inclusive of taxes (GST).
+                        Always check with the railway staff for the latest rates on board.
+                    </div>
+                `;
+            } else if (tabName === 'meals') {
+                noteHtml = `
+                    <div class="note">
+                        <strong><i class="material-icons">info</i> Important Note:</strong> All displayed prices are officially inclusive of taxes (GST).
+                        Menu items and prices may vary based on train type (e.g., Rajdhani, Shatabdi).
+                    </div>
+                `;
+            } else if (tabName === 'breakfast' || tabName === 'snackmeals') {
+                noteHtml = `
+                    <div class="note">
+                        <strong><i class="material-icons">info</i> Important Note:</strong> All displayed prices are officially inclusive of taxes (GST).
+                        Check availability for specific items in your train.
+                    </div>
+                `;
+            }
+
+
+            for (const [category, items] of Object.entries(data)) {
+                if (items.length === 0) continue;
+
+                 // Logic to assign an icon based on category name
+                let categoryIcon = 'restaurant';
+                if (category.toLowerCase().includes('tea') || category.toLowerCase().includes('coffee')) {
+                    categoryIcon = 'emoji_food_beverage';
+                } else if (category.toLowerCase().includes('meal') || category.toLowerCase().includes('main')) {
+                    categoryIcon = 'set_meal';
+                } else if (category.toLowerCase().includes('break') || category.toLowerCase().includes('veg')) {
+                    categoryIcon = 'ramen_dining';
+                } else if (category.toLowerCase().includes('snack')) {
+                    categoryIcon = 'fastfood';
+                }
+                
+                html += `
+                    <div class="menu-section">
+                        <div class="section-title">
+                            <i class="material-icons">${categoryIcon}</i> ${category}
+                        </div>
+                        <table class="menu-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 5%"></th>
+                                    <th style="width: 55%">Item</th>
+                                    <th style="width: 20%; text-align: right;">At Station</th>
+                                    <th style="width: 20%; text-align: right;">In Train</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                `;
+
+                items.forEach(item => {
+                    // Check if item.veg is explicitly false for non-veg icon, otherwise assume veg
+                    const icon = item.veg
+                        ? 'https://menurates.irctc.co.in/images/veg.png'
+                        : 'https://menurates.irctc.co.in/images/non-veg.png';
+
+                    const formatPrice = (price) => {
+                        if (price === "N/A" || typeof price !== 'number') return price;
+                        return `<i class="fa fa-rupee"></i> ${price.toFixed(0)}`;
+                    };
+
+                    html += `
+                        <tr>
+                            <td><img src="${icon}" alt="${item.veg ? 'Veg' : 'Non-Veg'}" class="${item.veg ? 'veg-icon' : 'non-veg-icon'}"></td>
+                            <td class="item-name">${item.item}</td>
+                            <td class="price">${formatPrice(item.atStation)}</td>
+                            <td class="price">${formatPrice(item.inTrain)}</td>
+                        </tr>
+                    `;
+                });
+
+                html += `
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+            }
+
+            return html + noteHtml; // Append the tab-specific note
+        }
+
+        // --- UI & Theme Logic ---
+        function showTab(event, tabName) {
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+
+            document.getElementById(tabName).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+
+        function toggleTheme() {
+            const body = document.body;
+            const themeIcon = document.getElementById('theme-icon');
+
+            body.classList.toggle('dark-mode');
+
+            const isDarkMode = body.classList.contains('dark-mode');
+
+            if (isDarkMode) {
+                themeIcon.textContent = 'light_mode';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                themeIcon.textContent = 'dark_mode';
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const body = document.body;
+            const themeIcon = document.getElementById('theme-icon');
+
+            if (savedTheme === 'dark') {
+                body.classList.add('dark-mode');
+                themeIcon.textContent = 'light_mode';
+            } else {
+                themeIcon.textContent = 'dark_mode';
+            }
+        }
+
+        // Initialize the page, fetch data, and update status icons
+        window.addEventListener('DOMContentLoaded', async () => {
+            loadTheme();
+
+            const tabs = [
+                { id: 'beverages', url: BEVERAGES_URL, statusId: 'beverages-status-icon', name: 'beverages' },
+                { id: 'breakfast', url: BREAKFAST_URL, statusId: 'breakfast-status-icon', name: 'breakfast' },
+                { id: 'meals', url: MEALS_URL, statusId: 'meals-status-icon', name: 'meals' },
+                { id: 'snackmeals', url: SNACKMEALS_URL, statusId: 'snackmeals-status-icon', name: 'snack meals' }
+            ];
+
+            const loadingTemplate = (menuType) => `
+                <div class="loading">
+                    <i class="fa fa-spinner fa-spin"></i> Loading ${menuType} menu from IRCTC...
+                </div>
+            `;
+
+            for (const tab of tabs) {
+                const contentDiv = document.getElementById(tab.id);
+                contentDiv.innerHTML = loadingTemplate(tab.name);
+                
+                const menuData = await fetchMenuData(tab.url);
+                const isOnline = menuData && Object.keys(menuData).length > 0;
+                updateStatusIcon(tab.statusId, isOnline);
+
+                if (isOnline) {
+                    const menuContent = createMenuTable(menuData, tab.id);
+                    contentDiv.innerHTML = menuContent;
+                } else {
+                    contentDiv.innerHTML = `
+                        <div class="error">
+                            <strong><i class="material-icons">error</i> Connection Error:</strong>
+                            Unable to load the standard ${tab.name} menu. The IRCTC source might be temporarily unavailable.
+                        </div>
+                    `;
+                }
+            }
+        });
+    </script>
+</body>
+</html>
