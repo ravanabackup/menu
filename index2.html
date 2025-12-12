@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Indian Railway Food Menu - IRCTC</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Montserrat:wght@800&display=swap" rel="stylesheet">
+    <title>Indian Railway Food Menu - IRCTC (CORS Proxy Applied)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Montserrat:wght=800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
@@ -12,55 +12,44 @@
         :root {
             /* Primary Color: Deep Purple / Indigo */
             --hue-primary: 260; 
-            --color-primary: hsl(var(--hue-primary), 70%, 55%); /* #7957d5 (Vibrant) */
-            --color-on-primary: #ffffff;                        /* Surface/Background Colors (Light) */
+            --color-primary: hsl(var(--hue-primary), 70%, 55%); 
+            --color-on-primary: #ffffff;
             --color-surface-bg: #f8f6fb;
             --color-surface-container-high: #ffffff; 
             --color-surface-container: #ede7f6;
-            --color-on-surface: #1d1b20;                        /* Accent & Secondary */
-            --color-secondary-container: hsl(var(--hue-primary), 60%, 90%); /* Light Purple Pill */
-            --color-on-secondary-container: #494551;                        /* Other Colors */
+            --color-on-surface: #1d1b20;
+            --color-secondary-container: hsl(var(--hue-primary), 60%, 90%);
+            --color-on-secondary-container: #494551;
             --color-outline: #7a7585;
             --color-error: #ba1a1a;
             --color-price: #388e3c; 
-            --color-online: #4CAF50; /* Green for online status */                        
-            /* Expressive Geometry */
+            --color-online: #4CAF50;
             --border-radius-xl: 36px;
-            --border-radius-l: 16px;                        
-            /* Expressive Shadow / Elevation */
+            --border-radius-l: 16px;
             --elevation-low: 0 4px 10px rgba(0, 0, 0, 0.05);
             --elevation-mid: 0 8px 18px rgba(0, 0, 0, 0.1);
-            --elevation-high: 0 12px 25px rgba(0, 0, 0, 0.15);
         }
 
         /* Dark Theme Palette (Simulated) */        
         body.dark-mode {
-            /* Primary Color: Lighter Purple for contrast */
-            --color-primary: hsl(var(--hue-primary), 70%, 75%); /* #d0bcff */
-            --color-on-primary: #381e72;                        /* Surface/Background Colors (Dark) */
+            --color-primary: hsl(var(--hue-primary), 70%, 75%);
+            --color-on-primary: #381e72;
             --color-surface-bg: #110e14;
             --color-surface-container-high: #1d1b20;
             --color-surface-container: #26242c;
-            --color-on-surface: #e6e1e5;                        /* Accent & Secondary */
+            --color-on-surface: #e6e1e5;
             --color-secondary-container: #443c52;
-            --color-on-secondary-container: #e8def8;                        /* Other Colors */
+            --color-on-secondary-container: #e8def8;
             --color-outline: #948f99;
-            --color-error: #ffb4ab; /* Adjusted light red for visibility in dark mode */
+            --color-error: #ffb4ab;
             --color-price: #a5d6a7; 
-            --color-online: #81c784; /* Lighter green for dark mode contrast */                        
-            /* Dark Shadows (less prominent) */
+            --color-online: #81c784;
             --elevation-low: 0 2px 5px rgba(0, 0, 0, 0.5);
             --elevation-mid: 0 5px 12px rgba(0, 0, 0, 0.6);
-            --elevation-high: 0 10px 20px rgba(0, 0, 0, 0.8);
         }
 
         /* --- Global Styles --- */        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Roboto', sans-serif;
             background-color: var(--color-surface-bg);
@@ -77,10 +66,9 @@
             border-radius: var(--border-radius-xl);
             box-shadow: var(--elevation-mid);
             overflow: hidden;
-            transition: background-color 0.4s ease, box-shadow 0.4s ease;
         }
 
-        /* --- Header Section (Expressive Top Bar) --- */        
+        /* --- Header Section --- */        
         .header {
             background-color: var(--color-primary);
             color: var(--color-on-primary);
@@ -101,39 +89,22 @@
             gap: 10px;
         }
 
-        .header h1 > .fa-train {
-            font-size: 0.8em;
-        }
-
-        .header p {
-            font-size: 1.1em;
-            opacity: 0.9;
-        }
-
-        /* --- Status Icons Styling (Using Emojis) --- */        
-        .header h1 .status-icon {
+        .status-icon {
             font-size: 1.2em;
             vertical-align: middle;
             transition: color 0.3s ease;
             display: inline-flex;
-            line-height: 1; /* Ensures proper alignment of emojis */
+            line-height: 1; 
         }
 
-        .header h1 .status-icon.online {
-            color: var(--color-online);
-        }
-
-        .header h1 .status-icon.error {
-            color: var(--color-error); 
-            animation: pulse-red 1.2s infinite alternate;
-        }
+        .status-icon.online { color: var(--color-online); }
+        .status-icon.error { color: var(--color-error); animation: pulse-red 1.2s infinite alternate; }
 
         @keyframes pulse-red {
             from { opacity: 0.7; transform: scale(1.0); }
             to { opacity: 1; transform: scale(1.2); }
         }
 
-        /* --- Theme Toggle (Floating Action Button Style) --- */        
         .theme-toggle {
             position: absolute;
             top: 20px;
@@ -147,25 +118,19 @@
             cursor: pointer;
             font-size: 1.4em;
             box-shadow: var(--elevation-low);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        .theme-toggle:hover {
-            box-shadow: var(--elevation-mid);
-            transform: scale(1.05);
-        }
-
-        /* --- Tabs (Segmented Button/Pill Style) --- */        
+        /* --- Tabs --- */        
         .tabs {
             display: flex;
             padding: 16px 24px;
             gap: 12px;
             background-color: var(--color-surface-container-high);
             border-bottom: 1px solid var(--color-outline);
-            transition: background-color 0.4s ease;
             flex-wrap: wrap; 
         }
 
@@ -175,23 +140,16 @@
             padding: 14px 10px;
             text-align: center;
             cursor: pointer;
-            font-size: 1em;
             font-weight: 500;
             color: var(--color-on-surface);
             border: 1px solid var(--color-outline);
             background-color: transparent;
             border-radius: var(--border-radius-l);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
-        }
-
-        .tab:hover {
-            background-color: var(--color-secondary-container);
-            border-color: var(--color-secondary-container);
-            transform: translateY(-2px);
         }
 
         .tab.active {
@@ -199,12 +157,6 @@
             color: var(--color-on-primary);
             border-color: var(--color-primary);
             box-shadow: var(--elevation-low);
-            transform: translateY(0);
-        }
-
-        .tab span {
-            font-size: 1.2em;
-            line-height: 1;
         }
 
         /* --- Content Area --- */        
@@ -218,15 +170,9 @@
 
         .tab-content.active {
             display: block;
-            animation: fadeInSlide 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
-        }
-
-        @keyframes fadeInSlide {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
         }
         
-        /* --- Last Modified/Header Info Box --- */
+        /* --- Last Modified/Header Info Box (Critical) --- */
         .header-info {
             background-color: var(--color-secondary-container);
             color: var(--color-on-secondary-container);
@@ -238,6 +184,21 @@
             align-items: center;
             gap: 10px;
             box-shadow: var(--elevation-low);
+            border: 1px solid transparent; 
+        }
+
+        .header-info.error-state {
+            background-color: #fce8e6; 
+            color: var(--color-error);
+            border: 1px solid var(--color-error);
+        }
+
+        body.dark-mode .header-info.error-state {
+            background-color: #3b000a;
+        }
+
+        .header-info.error-state .material-icons {
+            color: var(--color-error);
         }
         
         .header-info .material-icons {
@@ -247,21 +208,16 @@
         
         .header-info strong {
             font-weight: 500;
+            white-space: nowrap;
         }
 
-        /* --- Menu Sections (Expressive Card Containers) --- */        
+        /* --- Menu Sections & Tables --- */        
         .menu-section {
             margin-bottom: 32px;
             padding: 24px;
             background-color: var(--color-surface-container);
             border-radius: var(--border-radius-l);
             box-shadow: var(--elevation-low);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .menu-section:hover {
-            box-shadow: var(--elevation-mid);
-            transform: translateY(-4px);
         }
 
         .section-title {
@@ -276,18 +232,9 @@
             border-bottom: 2px solid var(--color-secondary-container);
         }
 
-        .section-title .material-icons {
-            font-size: 1.2em;
-        }
-
-        /* --- Menu Table Styles (Replicated from previous successful structure) --- */        
         .menu-table {
             width: 100%;
             border-collapse: collapse;
-        }
-
-        .menu-table thead {
-            border-bottom: 2px solid var(--color-outline);
         }
 
         .menu-table th {
@@ -297,151 +244,62 @@
             opacity: 0.8;
             font-size: 0.9em;
         }
-
-        .menu-table th:nth-child(3),
-        .menu-table th:nth-child(4) {
-            text-align: right;
-        }
         
-        .menu-table.snack-table th:nth-child(3) {
-            text-align: left;
-        }
-        .menu-table.snack-table th:nth-child(4) {
-             display: none;
-        }
-
-
-        .menu-table tbody tr {
-            border-bottom: 1px solid rgba(122, 117, 133, 0.15); 
-            transition: background-color 0.2s ease;
-        }
-
-        .menu-table tbody tr:last-child {
-            border-bottom: none;
-        }
-
-        .menu-table tbody tr:hover {
-            background-color: rgba(121, 87, 213, 0.1); 
-        }
-
-        .menu-table td {
-            padding: 16px 8px;
-            vertical-align: middle;
-        }
-
+        .menu-table th:nth-child(3),
+        .menu-table th:nth-child(4),
         .menu-table td:nth-child(3),
         .menu-table td:nth-child(4) {
             text-align: right;
         }
         
-        .menu-table.snack-table td:nth-child(3) {
-            text-align: left; 
-        }
-        .menu-table.snack-table td:nth-child(4) {
-            text-align: right; 
-        }
-        
-        .menu-table.snack-table .hide-on-snack {
-             display: none;
-        }
+        .menu-table.snack-table th:nth-child(3) { text-align: left; }
+        .menu-table.snack-table th:nth-child(4) { display: none; }
+        .menu-table.snack-table td:nth-child(3) { text-align: left; }
+        .menu-table.snack-table td:nth-child(4) { text-align: right; }
+        .menu-table.snack-table .hide-on-snack { display: none; }
 
-        .veg-icon, .non-veg-icon {
-            width: 24px;
-            height: 24px;
+        .menu-table td {
+            padding: 16px 8px;
             vertical-align: middle;
-        }
-
-        .item-name {
-            font-weight: 400;
-            font-size: 1.05em;
+            border-bottom: 1px solid rgba(122, 117, 133, 0.15); 
         }
         
-        .item-particulars {
-            font-size: 0.9em;
-            color: var(--color-on-surface);
-            opacity: 0.7;
-        }
-
         .price {
             font-size: 1.1em;
             color: var(--color-price);
             font-weight: 700;
             white-space: nowrap;
         }
-
-        .fa-rupee {
-            font-size: 0.9em;
-            margin-right: 2px;
-            font-weight: bold;
-        }
         
-        /* --- Other Message Styles (No change needed) --- */        
-        .loading, .error, .note {
+        .note {
+            background-color: var(--color-primary);
+            color: var(--color-on-primary);
             padding: 20px;
             border-radius: var(--border-radius-l);
             margin: 20px 0;
-            font-size: 1em;
             display: flex;
             align-items: center;
             gap: 12px;
             box-shadow: var(--elevation-low);
         }
 
-        .loading {
-            justify-content: center;
-            background-color: var(--color-secondary-container);
-            color: var(--color-primary);
+        .loading, .error {
+            padding: 20px;
+            border-radius: var(--border-radius-l);
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: var(--elevation-low);
         }
+        .loading { justify-content: center; background-color: var(--color-secondary-container); color: var(--color-primary); }
+        .error { background-color: #fce8e6; color: var(--color-error); border-left: 4px solid var(--color-error); }
+        body.dark-mode .error { background-color: #3b000a; color: var(--color-error); }
 
-        .error {
-            background-color: #fce8e6; 
-            color: var(--color-error);
-            border-left: 4px solid var(--color-error);
-        }
-
-        body.dark-mode .error {
-            background-color: #3b000a;
-            color: var(--color-error);
-        }
-
-        .note {
-            background-color: var(--color-primary);
-            color: var(--color-on-primary);
-        }
-
-        .note strong {
-            font-weight: 700;
-        }
-
-        /* --- Media Queries --- */        
+        /* --- Media Queries (Mobile View) --- */        
         @media (max-width: 600px) {
-            body {
-                padding: 16px 8px;
-            }
-
-            .tabs {
-                flex-direction: column;
-                padding: 16px;
-                gap: 8px;
-            }
-            
-            .tab {
-                font-size: 0.9em;
-                padding: 12px;
-                min-width: unset; 
-            }
-
-            .content {
-                padding: 16px;
-            }
-
-            .menu-table.snack-table td:nth-child(3) {
-                display: none; 
-            }
-            
-            .price {
-                font-size: 1em;
-            }
+            .tabs { flex-direction: column; }
+            .menu-table.snack-table td:nth-child(3) { display: none; }
         }
     </style>
 </head>
@@ -452,7 +310,7 @@
                 <i class="material-icons" id="theme-icon">dark_mode</i>
             </button>
             <h1>
-                <i class="fa fa-train"></i> IRCTC E-Catering 
+                <i class="fa fa-train"></i> IRCTC E-Catering
                 <span class="status-icon" id="beverages-status-icon" title="Beverages Status">☕</span>
                 <span class="status-icon" id="breakfast-status-icon" title="Breakfast Status">🍳</span>
                 <span class="status-icon" id="meals-status-icon" title="Meals Status">🥗</span>
@@ -462,145 +320,111 @@
         </div>
 
         <div class="tabs">
-            <button class="tab active" onclick="showTab(event, 'beverages')">
-                <span>☕</span> Beverages
-            </button>
-            <button class="tab" onclick="showTab(event, 'breakfast')">
-                <span>🍳</span> Breakfast
-            </button>
-            <button class="tab" onclick="showTab(event, 'meals')">
-                <span>🥗</span> Meals
-            </button>
-            <button class="tab" onclick="showTab(event, 'snackmeals')">
-                <span>🥪</span> Snack Meals
-            </button>
+            <button class="tab active" onclick="showTab(event, 'beverages')"><span>☕</span> Beverages</button>
+            <button class="tab" onclick="showTab(event, 'breakfast')"><span>🍳</span> Breakfast</button>
+            <button class="tab" onclick="showTab(event, 'meals')"><span>🥗</span> Meals</button>
+            <button class="tab" onclick="showTab(event, 'snackmeals')"><span>🥪</span> Snack Meals</button>
         </div>
 
         <div class="content">
             <div id="beverages" class="tab-content active">
-                <div class="loading">
-                    <i class="fa fa-spinner fa-spin"></i> Loading beverages menu...
-                </div>
+                <div class="loading"><i class="fa fa-spinner fa-spin"></i> Loading beverages menu...</div>
             </div>
             <div id="breakfast" class="tab-content">
-                <div class="loading">
-                    <i class="fa fa-spinner fa-spin"></i> Loading breakfast menu...
-                </div>
+                <div class="loading"><i class="fa fa-spinner fa-spin"></i> Loading breakfast menu...</div>
             </div>
             <div id="meals" class="tab-content">
-                <div class="loading">
-                    <i class="fa fa-spinner fa-spin"></i> Loading meals menu...
-                </div>
+                <div class="loading"><i class="fa fa-spinner fa-spin"></i> Loading meals menu...</div>
             </div>
             <div id="snackmeals" class="tab-content">
-                <div class="loading">
-                    <i class="fa fa-spinner fa-spin"></i> Loading snack meals menu...
-                </div>
+                <div class="loading"><i class="fa fa-spinner fa-spin"></i> Loading snack meals menu...</div>
             </div>
         </div>
     </div>
     <script>
-        // CORS proxy to fetch data from IRCTC (as provided)
+        // --- Configuration ---
         const CORS_PROXY = 'https://api.allorigins.win/raw?url=';
-        
-        // URLs for fetching data
         const BEVERAGES_URL = 'https://menurates.irctc.co.in/standared_beverages.html';
         const MEALS_URL = 'https://menurates.irctc.co.in/standared_meal.html';
         const BREAKFAST_URL = 'https://menurates.irctc.co.in/standared_breakfast.html';
         const SNACKMEALS_URL = 'https://menurates.irctc.co.in/snackMeals.html';
 
         /**
-         * Function to convert a GMT date string (like from Last-Modified header) to IST format.
-         * @param {string} gmtDateString - The date string in GMT format.
-         * @returns {string} - The formatted date string in IST, or a default error message.
+         * Converts a GMT date string to Indian Standard Time (IST) format.
          */
         function convertGMTtoIST(gmtDateString) {
-            if (!gmtDateString) {
-                return 'Date not available';
-            }
+            if (!gmtDateString) return 'Date not available';
             try {
-                // Parse the GMT date string
                 const date = new Date(gmtDateString);
-                
-                // Check if the date is valid
-                if (isNaN(date.getTime())) {
-                    return 'Invalid Date Format';
-                }
-
-                // Format the date to IST
+                if (isNaN(date.getTime())) return 'Invalid Date Format';
                 const istString = date.toLocaleString('en-IN', {
                     timeZone: 'Asia/Kolkata',
-                    weekday: 'short',
-                    year: 'numeric',
-                    month: 'short',
-                    day: '2-digit',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    second: '2-digit',
-                    hour12: false
+                    weekday: 'short', year: 'numeric', month: 'short', day: '2-digit',
+                    hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
                 });
-
-                // The date format is usually: "Tue, 21 Oct 2025, 15:44:52"
                 return `${istString} IST`;
             } catch (error) {
-                console.error('Date conversion error:', error);
                 return 'Conversion Error';
             }
         }
         
         /**
-         * Function to fetch the Last-Modified header using a CORS-enabled endpoint.
-         * @param {string} url - The original IRCTC menu URL.
-         * @returns {string} - The Last-Modified date string in IST, or null on failure.
+         * Fetches the Last-Modified header using a CORS proxy.
+         * Acknowledges that the proxy might strip the actual header and provides fallback information.
          */
         async function fetchLastModifiedHeader(url) {
-            // Use allorigins endpoint for the HEAD request to avoid CORS issues if possible
-            // We use the same proxy endpoint for a HEAD request if the server allows it
-            // NOTE: The allorigins proxy does not allow HEAD method, so we must use GET and check headers.
             try {
-                // Fetch only a small portion of the response body to be efficient
+                // Using the CORS proxy URL
                 const response = await fetch(CORS_PROXY + encodeURIComponent(url), {
                     method: 'GET'
                 });
 
                 if (!response.ok) {
-                    return null;
+                    return { lastModified: 'Failed to fetch header (Network error or IRCTC down)', isError: true };
                 }
                 
-                // Get the Last-Modified header from the raw response
-                const gmtDate = response.headers.get('Last-Modified');
+                // 1. Try to get the standard Last-Modified header (often stripped by proxy)
+                let gmtDate = response.headers.get('Last-Modified');
                 
+                // 2. Use the Proxy's response Date header as fallback timestamp
+                const proxyDate = response.headers.get('Date');
+
                 if (gmtDate) {
-                    return convertGMTtoIST(gmtDate);
+                    // Success: Header was relayed properly
+                    return { lastModified: convertGMTtoIST(gmtDate), isError: false };
                 }
                 
-                return 'Header Not Found';
+                // Failure: Header was stripped by the proxy (common issue)
+                return { 
+                    lastModified: `Header not available. Proxy Response Date: ${proxyDate ? convertGMTtoIST(proxyDate) : 'Unknown Date'} (Original Last-Modified header stripped by CORS Proxy)`, 
+                    isError: true 
+                };
 
             } catch (error) {
-                console.error(`Error fetching header for ${url}:`, error);
-                return 'Fetch Failed';
+                return { lastModified: 'Failed to fetch header (Client-side error)', isError: true };
+            }
+        }
+
+        // --- Data Parsing & Generation ---
+
+        /**
+         * Fetches and parses the menu content.
+         */
+        async function fetchMenuData(url) {
+            try {
+                // *** Using Proxy for Content ***
+                const response = await fetch(CORS_PROXY + encodeURIComponent(url));
+                if (!response.ok) throw new Error('Failed to fetch data');
+                const html = await response.text();
+                return parseMenuData(html, url); 
+            } catch (error) {
+                return null;
             }
         }
 
         /**
-         * Function to update the color of the status icon based on the fetch result.
-         * @param {string} id - The ID of the status icon element (e.g., 'beverages-status-icon').
-         * @param {boolean} isOnline - True if the data fetch was successful and contained content.
+         * Parses the menu data from the IRCTC HTML structure.
          */
-        function updateStatusIcon(id, isOnline) {
-            const iconElement = document.getElementById(id);
-            if (iconElement) {
-                if (isOnline) {
-                    iconElement.classList.remove('error');
-                    iconElement.classList.add('online');
-                } else {
-                    iconElement.classList.remove('online');
-                    iconElement.classList.add('error');
-                }
-            }
-        }
-
-        // --- Data Parsing Logic (Replicated from last successful iteration) ---
         function parseMenuData(htmlString, url) {
             const parser = new DOMParser();
             const doc = parser.parseFromString(htmlString, 'text/html');
@@ -617,36 +441,18 @@
                 const categoryHeader = row.querySelector('td[colspan]');
                 if (categoryHeader && categoryHeader.querySelector('h3')) {
                     const categoryName = categoryHeader.querySelector('h3').textContent.trim();
-
-                    if (categoryName.includes('Humsafar') || categoryName.includes('AVM Machine')) {
-                        currentCategory = null;
-                        return;
-                    }
-
+                    if (categoryName.includes('Humsafar') || categoryName.includes('AVM Machine')) { currentCategory = null; return; }
                     currentCategory = categoryName || (isSnackMeal ? 'Snack Meals' : null);
-                    if (!menuData[currentCategory]) {
-                         menuData[currentCategory] = [];
-                    }
-                    return;
+                    if (!menuData[currentCategory]) { menuData[currentCategory] = []; } return;
                 }
 
                 if (currentCategory === null) return;
 
-                const nestedTable = row.querySelector('table');
-                if (nestedTable) {
-                    return;
-                }
-
                 const cells = row.querySelectorAll('td');
 
-                if (isSnackMeal && cells.length === 4) {
-                    const itemText = cells[1].textContent.trim();
-                    const particularsText = cells[2].textContent.trim();
-                    const rateText = cells[3].textContent.trim();
-                    
+                if ((isSnackMeal && cells.length === 4) || (!isSnackMeal && cells.length >= 4)) {
+                    const itemText = cells[1] ? cells[1].textContent.trim() : '';
                     if (!itemText || itemText.toLowerCase().includes('item') || itemText === '') return;
-                    
-                    const isVeg = true; 
 
                     const cleanPrice = (text) => {
                         if (text === 'N/A' || text === '-') return 'N/A';
@@ -654,118 +460,76 @@
                         return isNaN(price) ? text : Math.round(price);
                     };
 
-                    menuData[currentCategory].push({
-                        item: itemText,
-                        particulars: particularsText,
-                        veg: isVeg,
-                        singleRate: cleanPrice(rateText) 
-                    });
+                    if (isSnackMeal) {
+                        menuData[currentCategory].push({
+                            item: itemText,
+                            particulars: cells[2] ? cells[2].textContent.trim() : '',
+                            veg: true,
+                            singleRate: cleanPrice(cells[3] ? cells[3].textContent.trim() : '')
+                        });
+                    } else {
+                        const img = cells[0].querySelector('img');
+                        const isVeg = img ? (img.src.includes('veg.png') && !img.src.includes('non-veg.png')) : true;
 
-                } 
-                else if (!isSnackMeal && cells.length >= 4) {
-                    const itemText = cells[1].textContent.trim();
-
-                    if (!itemText || itemText.toLowerCase().includes('item') || itemText === '') return;
-
-                    const img = cells[0].querySelector('img');
-                    const isVeg = img ? (img.src.includes('veg.png') && !img.src.includes('non-veg.png')) : true;
-
-                    const atStationText = cells[cells.length - 2].textContent.trim(); 
-                    const inTrainText = cells[cells.length - 1].textContent.trim();
-
-                    const cleanPrice = (text) => {
-                        if (text === 'N/A' || text === '-') return 'N/A';
-                        const price = parseFloat(text.replace(/[^\d.]/g, ''));
-                        return isNaN(price) ? text : Math.round(price);
-                    };
-
-                    menuData[currentCategory].push({
-                        item: itemText,
-                        veg: isVeg,
-                        atStation: cleanPrice(atStationText),
-                        inTrain: cleanPrice(inTrainText)
-                    });
+                        menuData[currentCategory].push({
+                            item: itemText,
+                            veg: isVeg,
+                            atStation: cleanPrice(cells[cells.length - 2].textContent.trim()),
+                            inTrain: cleanPrice(cells[cells.length - 1].textContent.trim())
+                        });
+                    }
                 }
             });
 
             return menuData;
         }
 
-        // Function to fetch data from URL (Used for content parsing)
-        async function fetchMenuData(url) {
-            try {
-                const response = await fetch(CORS_PROXY + encodeURIComponent(url));
-                if (!response.ok) throw new Error('Failed to fetch data');
-                const html = await response.text();
-                return parseMenuData(html, url); 
-            } catch (error) {
-                console.error('Error fetching menu data:', error);
-                return null;
-            }
-        }
-
-        // --- HTML Generation Logic (Updated to include Header Info) ---
-        function createHeaderInfoBox(lastModifiedIst) {
+        /**
+         * Creates the header info box with date and status.
+         */
+        function createHeaderInfoBox(headerInfo) {
+            const icon = headerInfo.isError ? 'warning' : 'history';
+            const className = headerInfo.isError ? 'header-info error-state' : 'header-info';
+            
             return `
-                <div class="header-info">
-                    <i class="material-icons">history</i>
+                <div class="${className}">
+                    <i class="material-icons">${icon}</i>
                     <strong>Source Last Updated (IST):</strong> 
-                    <span id="last-modified-ist">${lastModifiedIst}</span>
+                    <span id="last-modified-ist">${headerInfo.lastModified}</span>
                 </div>
             `;
         }
         
+        /**
+         * Generates the HTML table structure for the menu.
+         */
         function createMenuTable(data, tabName) {
             let html = '';
             const isSnackMeal = tabName === 'snackmeals';
             const tableClass = isSnackMeal ? 'menu-table snack-table' : 'menu-table';
-
-            // Note specific to the tab content
             let noteHtml = '';
-            if (tabName === 'beverages') {
-                noteHtml = `
-                    <div class="note">
-                        <strong><i class="material-icons">info</i> Important Note:</strong> All displayed prices are officially inclusive of taxes (GST).
-                        Always check with the railway staff for the latest rates on board.
-                    </div>
-                `;
-            } else if (tabName === 'meals') {
-                noteHtml = `
-                    <div class="note">
-                        <strong><i class="material-icons">info</i> Important Note:</strong> All displayed prices are officially inclusive of taxes (GST).
-                        Menu items and prices may vary based on train type (e.g., Rajdhani, Shatabdi).
-                    </div>
-                `;
-            } else if (tabName === 'breakfast' || tabName === 'snackmeals') {
-                noteHtml = `
-                    <div class="note">
-                        <strong><i class="material-icons">info</i> Important Note:</strong> All displayed prices are officially inclusive of taxes (GST).
-                        Check availability for specific items in your train.
-                    </div>
-                `;
-            }
 
+            // Generate tab-specific notes
+            if (tabName === 'beverages') {
+                noteHtml = `<div class="note"><strong><i class="material-icons">info</i> Important Note:</strong> All displayed prices are officially inclusive of taxes (GST). Always check with the railway staff for the latest rates on board.</div>`;
+            } else if (tabName === 'meals') {
+                noteHtml = `<div class="note"><strong><i class="material-icons">info</i> Important Note:</strong> All displayed prices are officially inclusive of taxes (GST). Menu items and prices may vary based on train type (e.g., Rajdhani, Shatabdi).</div>`;
+            } else if (tabName === 'breakfast' || tabName === 'snackmeals') {
+                noteHtml = `<div class="note"><strong><i class="material-icons">info</i> Important Note:</strong> All displayed prices are officially inclusive of taxes (GST). Check availability for specific items in your train.</div>`;
+            }
 
             for (const [category, items] of Object.entries(data)) {
                 if (items.length === 0) continue;
 
-                 // Logic to assign an icon based on category name
                 let categoryIcon = 'restaurant';
-                if (category.toLowerCase().includes('tea') || category.toLowerCase().includes('coffee')) {
-                    categoryIcon = 'emoji_food_beverage';
-                } else if (category.toLowerCase().includes('meal') || category.toLowerCase().includes('main')) {
-                    categoryIcon = 'set_meal';
-                } else if (category.toLowerCase().includes('break') || category.toLowerCase().includes('veg')) {
-                    categoryIcon = 'ramen_dining';
-                } else if (category.toLowerCase().includes('snack')) {
-                    categoryIcon = 'fastfood';
-                }
+                if (category.toLowerCase().includes('tea') || category.toLowerCase().includes('coffee')) { categoryIcon = 'emoji_food_beverage'; } 
+                else if (category.toLowerCase().includes('meal') || category.toLowerCase().includes('main')) { categoryIcon = 'set_meal'; } 
+                else if (category.toLowerCase().includes('break')) { categoryIcon = 'ramen_dining'; } 
+                else if (category.toLowerCase().includes('snack')) { categoryIcon = 'fastfood'; }
                 
                 html += `
                     <div class="menu-section">
-                        <div class="section-title">
-                            <i class="material-icons">${categoryIcon}</i> ${category}
-                        </div>
+                        <div class="section-title"><i class="material-icons">${categoryIcon}</i> ${category}</div>
                         <table class="${tableClass}">
                             <thead>
                                 <tr>
@@ -779,7 +543,6 @@
                 `;
 
                 items.forEach(item => {
-                    // Item Icon
                     const icon = item.veg
                         ? 'https://menurates.irctc.co.in/images/veg.png'
                         : 'https://menurates.irctc.co.in/images/non-veg.png';
@@ -810,21 +573,16 @@
                     }
                 });
 
-                html += `
-                            </tbody>
-                        </table>
-                    </div>
-                `;
+                html += `</tbody></table></div>`;
             }
 
-            return html + noteHtml; // Append the tab-specific note
+            return html + noteHtml; 
         }
 
-        // --- UI & Theme Logic (No change needed) ---
+        // --- UI & Theme Logic ---
         function showTab(event, tabName) {
             document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
             document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
-
             document.getElementById(tabName).classList.add('active');
             event.currentTarget.classList.add('active');
         }
@@ -832,25 +590,16 @@
         function toggleTheme() {
             const body = document.body;
             const themeIcon = document.getElementById('theme-icon');
-
             body.classList.toggle('dark-mode');
-
             const isDarkMode = body.classList.contains('dark-mode');
-
-            if (isDarkMode) {
-                themeIcon.textContent = 'light_mode';
-                localStorage.setItem('theme', 'dark');
-            } else {
-                themeIcon.textContent = 'dark_mode';
-                localStorage.setItem('theme', 'light');
-            }
+            themeIcon.textContent = isDarkMode ? 'light_mode' : 'dark_mode';
+            localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
         }
 
         function loadTheme() {
             const savedTheme = localStorage.getItem('theme');
             const body = document.body;
             const themeIcon = document.getElementById('theme-icon');
-
             if (savedTheme === 'dark') {
                 body.classList.add('dark-mode');
                 themeIcon.textContent = 'light_mode';
@@ -858,8 +607,16 @@
                 themeIcon.textContent = 'dark_mode';
             }
         }
+        
+        function updateStatusIcon(id, isOnline) {
+            const iconElement = document.getElementById(id);
+            if (iconElement) {
+                iconElement.classList.remove('online', 'error');
+                iconElement.classList.add(isOnline ? 'online' : 'error');
+            }
+        }
 
-        // Initialize the page, fetch data, and update status icons
+        // --- Initialization ---
         window.addEventListener('DOMContentLoaded', async () => {
             loadTheme();
 
@@ -870,29 +627,25 @@
                 { id: 'snackmeals', url: SNACKMEALS_URL, statusId: 'snackmeals-status-icon', name: 'snack meals' }
             ];
 
-            const loadingTemplate = (menuType) => `
-                <div class="loading">
-                    <i class="fa fa-spinner fa-spin"></i> Loading ${menuType} menu from IRCTC...
-                </div>
-            `;
+            const loadingTemplate = (menuType) => `<div class="loading"><i class="fa fa-spinner fa-spin"></i> Loading ${menuType} menu from IRCTC...</div>`;
 
             for (const tab of tabs) {
                 const contentDiv = document.getElementById(tab.id);
                 contentDiv.innerHTML = loadingTemplate(tab.name);
                 
-                // 1. Fetch Header Info first (independent of content)
-                const lastModifiedIst = await fetchLastModifiedHeader(tab.url);
-                const headerInfoBox = createHeaderInfoBox(lastModifiedIst);
+                // 1. Fetch Header Info (Using Proxy)
+                const headerInfo = await fetchLastModifiedHeader(tab.url);
+                const headerInfoBox = createHeaderInfoBox(headerInfo);
 
-                // 2. Fetch Menu Content
+                // 2. Fetch Menu Content (Using Proxy)
                 const menuData = await fetchMenuData(tab.url);
                 const isOnline = menuData && Object.keys(menuData).length > 0;
                 updateStatusIcon(tab.statusId, isOnline);
 
-                // 3. Assemble and display content
+                // 3. Display Content
                 if (isOnline) {
                     const menuContent = createMenuTable(menuData, tab.id);
-                    contentDiv.innerHTML = headerInfoBox + menuContent; // Prepend header info
+                    contentDiv.innerHTML = headerInfoBox + menuContent;
                 } else {
                     contentDiv.innerHTML = headerInfoBox + `
                         <div class="error">
